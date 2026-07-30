@@ -3,11 +3,18 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Understory — can radar see logging under the canopy?</title>
+<title>Understory — can radar see what the forest hides?</title>
 <meta name="description" content="An open benchmark asking whether NISAR L-band coherence can detect forest degradation beneath closed canopy — how early, at what minimum event size, at what false-alarm rate. The answer is not in yet." />
-<meta property="og:title" content="Understory — can radar see logging under the canopy?" />
+<meta name="theme-color" content="#070b08" />
+<meta property="og:title" content="Understory — can radar see what the forest hides?" />
 <meta property="og:description" content="An open benchmark on NISAR L-band coherence. Kill criteria stated before building; results published favourable or not." />
 <meta property="og:type" content="website" />
+<meta property="og:url" content="https://vaishgajaraj.github.io/understory-site/" />
+<meta property="og:image" content="https://vaishgajaraj.github.io/understory-site/og.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:image:alt" content="Understory: Can radar see what the forest hides? An open NISAR benchmark." />
+<meta name="twitter:card" content="summary_large_image" />
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230a0f0c'/%3E%3Cpath d='M16 5l7 12H9zM16 12l6 11H10z' fill='%2357b87b'/%3E%3Crect x='14' y='22' width='4' height='5' fill='%238fa396'/%3E%3C/svg%3E" />
 <style>
   :root {
@@ -50,6 +57,17 @@
     font-size: var(--s0);
     line-height: 1.62;
     -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 20;
+    opacity: 0.025;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.7'/%3E%3C/svg%3E");
   }
 
   .shell { max-width: 68rem; margin: 0 auto; padding: 0 clamp(1.1rem, 4vw, 2.5rem); }
@@ -68,6 +86,21 @@
     text-transform: uppercase;
     color: var(--dim);
   }
+
+  .site-nav {
+    position: absolute;
+    inset: 0 0 auto;
+    z-index: 5;
+    border-bottom: 1px solid var(--line);
+    background: #070b0870;
+    backdrop-filter: blur(18px);
+  }
+  .nav-inner { height: 4.2rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+  .nav-links { display: flex; align-items: center; gap: 1.25rem; }
+  .nav-links a { color: var(--dim); text-decoration: none; font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.06em; }
+  .nav-links a:hover { color: var(--ink); }
+  .nav-github { border: 1px solid var(--line-strong); border-radius: 999px; padding: 0.34rem 0.72rem; }
+  @media (max-width: 42rem) { .nav-links a:not(.nav-github) { display: none; } }
 
   /* ---------- hero ---------- */
 
@@ -107,13 +140,15 @@
   .hero-inner {
     position: relative;
     z-index: 1;
-    padding: clamp(3.5rem, 11vw, 8rem) 0 clamp(2.5rem, 6vw, 4rem);
+    min-height: min(54rem, 94svh);
+    justify-content: center;
+    padding: clamp(7rem, 14vw, 10rem) 0 clamp(2.5rem, 6vw, 4rem);
     display: flex;
     flex-direction: column;
     gap: 1.6rem;
   }
 
-  .wordmark { display: flex; align-items: center; gap: 0.6rem; }
+  .wordmark { display: flex; align-items: center; gap: 0.6rem; color: var(--ink); text-decoration: none; }
   .wordmark .glyph {
     width: 1.4rem; height: 1.4rem; border-radius: 5px;
     background: linear-gradient(160deg, #2e5c3f, var(--signal-deep));
@@ -121,6 +156,14 @@
     font-family: var(--mono); font-size: 0.78rem; font-weight: 600; color: #0a0f0c;
   }
   .wordmark .name { font-weight: 620; letter-spacing: 0.01em; }
+
+  .eyebrow {
+    display: inline-flex; align-items: center; gap: 0.55rem; width: fit-content;
+    border: 1px solid #6fc48d44; background: #112518aa; color: var(--signal);
+    padding: 0.33rem 0.65rem; border-radius: 999px;
+    font-family: var(--mono); font-size: 0.68rem; letter-spacing: 0.07em; text-transform: uppercase;
+  }
+  .eyebrow::before { content: ""; width: 0.42rem; height: 0.42rem; border-radius: 50%; background: var(--signal); box-shadow: 0 0 0 0.25rem #6fc48d18; }
 
   h1 {
     font-size: var(--s4);
@@ -133,6 +176,7 @@
   }
 
   .hero .standfirst { font-size: var(--s1); color: var(--ink-2); max-width: 54ch; }
+  .hero-note { font-family: var(--mono); font-size: 0.72rem; color: var(--faint); letter-spacing: 0.04em; }
 
   .cta-row { display: flex; flex-wrap: wrap; gap: 0.7rem; margin-top: 0.4rem; }
 
@@ -171,6 +215,12 @@
   /* ---------- sections ---------- */
 
   section { padding: clamp(3rem, 7vw, 5.5rem) 0; border-bottom: 1px solid var(--line); }
+  section[id] { scroll-margin-top: 2rem; }
+  .section-signal { position: relative; }
+  .section-signal::before {
+    content: ""; position: absolute; width: 34rem; height: 34rem; border-radius: 50%;
+    right: -20rem; top: 10%; background: #57b87b0b; filter: blur(1px); pointer-events: none;
+  }
 
   .head { display: flex; flex-direction: column; gap: 0.7rem; margin-bottom: 2rem; }
   h2 {
@@ -186,6 +236,23 @@
 
   .prose { display: flex; flex-direction: column; gap: 1.05rem; color: var(--ink-2); }
   .prose strong { color: var(--ink); }
+
+  .story-grid { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(18rem, 0.95fr); gap: clamp(2rem, 7vw, 6rem); align-items: start; }
+  .story-visual {
+    position: sticky; top: 2rem; min-height: 25rem; border: 1px solid var(--line); border-radius: 16px;
+    overflow: hidden; background: radial-gradient(circle at 50% 85%, #204c30 0, #101a13 30%, #090e0b 72%);
+  }
+  .canopy { position: absolute; inset: 0; overflow: hidden; }
+  .canopy i { position: absolute; display: block; border-radius: 50%; background: #183923; border: 1px solid #4c805c35; box-shadow: inset -8px -10px 24px #07110a80; }
+  .canopy i:nth-child(1) { width: 10rem; height: 10rem; left: -2rem; top: 1rem; }
+  .canopy i:nth-child(2) { width: 12rem; height: 12rem; right: -3rem; top: -2rem; }
+  .canopy i:nth-child(3) { width: 9rem; height: 9rem; left: 34%; top: 3rem; }
+  .canopy i:nth-child(4) { width: 11rem; height: 11rem; right: 8%; bottom: -3rem; }
+  .canopy i:nth-child(5) { width: 12rem; height: 12rem; left: -3rem; bottom: -4rem; }
+  .radar-beam { position: absolute; width: 2px; height: 23rem; left: 50%; top: -5rem; background: linear-gradient(var(--signal), transparent); transform: rotate(25deg); box-shadow: 0 0 18px var(--signal); }
+  .trail { position: absolute; width: 125%; height: 8px; left: -12%; bottom: 29%; border-top: 2px dashed var(--alert); transform: rotate(-9deg); opacity: 0.82; }
+  .visual-label { position: absolute; inset: auto 1rem 1rem; background: #071009d9; border: 1px solid var(--line); border-radius: 8px; padding: 0.72rem 0.82rem; color: var(--dim); font-family: var(--mono); font-size: 0.7rem; }
+  @media (max-width: 48rem) { .story-grid { grid-template-columns: 1fr; } .story-visual { position: relative; min-height: 19rem; } }
 
   /* ---------- status ---------- */
 
@@ -209,6 +276,30 @@
     line-height: 1.1;
   }
   .status .k { font-size: var(--s-1); color: var(--dim); line-height: 1.5; }
+
+  .progress-wrap { margin-top: 2.2rem; }
+  .progress-line { height: 2px; background: var(--line-strong); margin: 0 8%; position: relative; top: 1.12rem; }
+  .progress-line span { display: block; width: 58%; height: 100%; background: linear-gradient(90deg, var(--signal-deep), var(--alert)); }
+  .stages { display: grid; grid-template-columns: repeat(5, 1fr); position: relative; }
+  .stage { text-align: center; color: var(--faint); font-size: 0.74rem; padding: 0 0.3rem; }
+  .stage b { display: grid; place-items: center; width: 2.25rem; height: 2.25rem; margin: 0 auto 0.65rem; border-radius: 50%; border: 1px solid var(--line-strong); background: var(--ground); font-family: var(--mono); color: var(--dim); }
+  .stage.done b { background: var(--signal-deep); color: #071009; border-color: var(--signal-deep); }
+  .stage.now b { color: var(--alert); border-color: var(--alert); box-shadow: 0 0 0 0.35rem #e8a33d12; }
+  @media (max-width: 42rem) { .progress-line { display: none; } .stages { grid-template-columns: 1fr; gap: 0.65rem; } .stage { display: flex; align-items: center; text-align: left; gap: 0.8rem; } .stage b { margin: 0; flex: none; } }
+
+  .lab { display: grid; grid-template-columns: 1.1fr 0.9fr; background: var(--panel); border: 1px solid var(--line); border-radius: 16px; overflow: hidden; }
+  .lab-display { position: relative; min-height: 25rem; background: #050806; overflow: hidden; }
+  #lab-canvas { width: 100%; height: 100%; display: block; image-rendering: pixelated; }
+  .lab-overlay { position: absolute; inset: 1rem 1rem auto; display: flex; justify-content: space-between; pointer-events: none; }
+  .lab-chip { background: #071009d9; border: 1px solid var(--line); border-radius: 999px; padding: 0.28rem 0.55rem; font-family: var(--mono); font-size: 0.67rem; color: var(--dim); }
+  .lab-copy { padding: clamp(1.4rem, 4vw, 2.4rem); display: flex; flex-direction: column; justify-content: center; gap: 1rem; }
+  .lab-copy h3 { font-size: var(--s2); line-height: 1.2; }
+  .lab-copy p { color: var(--ink-2); font-size: var(--s-1); }
+  .mode-switch { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.35rem; padding: 0.3rem; background: #070b08; border: 1px solid var(--line); border-radius: 9px; }
+  .mode-switch button { border: 0; border-radius: 6px; padding: 0.58rem 0.35rem; color: var(--dim); background: transparent; font: 0.7rem var(--mono); cursor: pointer; }
+  .mode-switch button[aria-pressed="true"] { background: var(--signal-deep); color: #071009; }
+  .mode-switch button:focus-visible { outline: 2px solid var(--alert); outline-offset: 2px; }
+  @media (max-width: 48rem) { .lab { grid-template-columns: 1fr; } .lab-display { min-height: 18rem; } }
 
   /* ---------- kill criteria ---------- */
 
@@ -241,6 +332,8 @@
     background: var(--panel); border: 1px solid var(--line); border-radius: 10px;
     padding: 1.15rem 1.2rem; display: flex; flex-direction: column; gap: 0.55rem;
   }
+  .card { transition: transform 0.2s ease, border-color 0.2s ease; }
+  .card:hover { transform: translateY(-3px); border-color: #6fc48d45; }
   .card p { font-size: var(--s-1); color: var(--ink-2); line-height: 1.55; max-width: none; }
   .card .tag { font-family: var(--mono); font-size: 0.68rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--faint); }
 
@@ -262,33 +355,48 @@
   .foot-links { display: flex; flex-wrap: wrap; gap: 0.6rem 1.5rem; font-family: var(--mono); font-size: var(--s-1); }
   footer p { font-size: var(--s-1); color: var(--faint); }
 
+  .reveal { opacity: 0; transform: translateY(14px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .reveal.visible { opacity: 1; transform: none; }
+
   @media (prefers-reduced-motion: reduce) {
     * { animation: none !important; transition: none !important; }
+    .reveal { opacity: 1; transform: none; }
   }
 </style>
 </head>
 <body>
 
 <div class="hero">
-  <canvas id="field" aria-hidden="true"></canvas>
-  <div class="shell hero-inner">
-    <div class="wordmark">
-      <span class="glyph">U</span>
-      <span class="name">Understory</span>
+  <nav class="site-nav" aria-label="Primary navigation">
+    <div class="shell nav-inner">
+      <a class="wordmark" href="#top" aria-label="Understory home">
+        <span class="glyph">U</span>
+        <span class="name">Understory</span>
+      </a>
+      <div class="nav-links">
+        <a href="#question">The question</a>
+        <a href="#signal-lab">Signal lab</a>
+        <a href="#criteria">Kill criteria</a>
+        <a class="nav-github" href="https://github.com/VaishGajaraj/Understory-AI">GitHub ↗</a>
+      </div>
     </div>
+  </nav>
+  <canvas id="field" aria-hidden="true"></canvas>
+  <div class="shell hero-inner" id="top">
+    <span class="eyebrow">Open research benchmark · pre-results</span>
 
-    <h1>Can radar see logging under the canopy?</h1>
+    <h1>Can radar see what the forest hides?</h1>
 
     <p class="standfirst">
-      Optical satellites are blocked by cloud and by leaves. NISAR&rsquo;s L-band radar penetrates
-      the canopy and returns from the ground. This is an open benchmark asking whether the
-      coherence between two passes can reveal what happened underneath.
+      Understory is testing whether free NISAR L-band radar can reveal logging roads, skid trails,
+      and mining beneath closed canopy—early enough, small enough, and reliably enough to matter.
     </p>
 
     <div class="cta-row">
-      <a class="btn primary" href="https://github.com/VaishGajaraj/Understory-AI">Read the code</a>
-      <a class="btn" href="#criteria">How it could fail</a>
+      <a class="btn primary" href="#question">Explore the experiment ↓</a>
+      <a class="btn" href="https://github.com/VaishGajaraj/Understory-AI">View on GitHub ↗</a>
     </div>
+    <p class="hero-note">No result claimed. The real-data benchmark is the next gate.</p>
 
     <div class="readout">
       <span id="pass-label">pass 01 / 12</span>
@@ -301,38 +409,48 @@
 
 <main>
 
-  <section id="question">
+  <section id="question" class="section-signal">
     <div class="shell">
-      <div class="head">
-        <span class="mono">The question</span>
-        <h2>Scoped as a question, not a platform</h2>
-      </div>
-      <div class="prose">
-        <p>
-          Selective logging leaves skid trails and access roads a few metres wide beneath an
-          otherwise intact canopy. From above, the forest still looks like forest. Below it, the
-          ground has physically changed &mdash; and a radar wavelength long enough to reach the
-          floor should notice when the surface between two passes stops matching itself.
-        </p>
-        <p>
-          <strong>Can NISAR L-band coherence detect documented forest degradation events &mdash;
-          how early, at what minimum event size, and at what false-alarm rate?</strong>
-        </p>
-        <p>
-          Nobody has answered that on real NISAR data. The mission launched in July 2025 and its
-          calibrated stream opened on 20 July 2026. This project intends to publish the answer,
-          favourable or not.
-        </p>
+      <div class="story-grid">
+        <div>
+          <div class="head">
+            <span class="mono">01 / The hidden change</span>
+            <h2>A forest can look intact from above while changing underneath</h2>
+          </div>
+          <div class="prose">
+            <p>
+              Selective logging leaves skid trails and access roads only metres wide beneath an
+              otherwise closed canopy. Clouds obscure optical satellites. Leaves obscure the ground.
+              The damage can remain invisible during the window when an early warning matters most.
+            </p>
+            <p>
+              NISAR sends a long-wavelength radar pulse through the canopy. Understory compares the
+              returning signal from one 12-day pass to the next, looking for places where the ground
+              stops matching itself—and where that change persists.
+            </p>
+            <p>
+              <strong>The experiment asks one falsifiable question:</strong> can this signal detect
+              documented degradation events at useful precision, at two hectares or smaller, and at
+              least three weeks before optical alerts in cloudy-season tropics?
+            </p>
+          </div>
+        </div>
+        <div class="story-visual" aria-label="Conceptual diagram of radar passing through canopy to reveal a ground trail">
+          <div class="canopy" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
+          <span class="radar-beam" aria-hidden="true"></span>
+          <span class="trail" aria-hidden="true"></span>
+          <span class="visual-label">Conceptual view · canopy above, disturbance below</span>
+        </div>
       </div>
 
-      <div class="status-grid">
+      <div class="status-grid reveal">
         <div class="status">
           <span class="v" style="color: var(--alert)">No result</span>
           <span class="k">The benchmark has not run on real forest data yet. Nothing here claims it works.</span>
         </div>
         <div class="status">
-          <span class="v">20 Jul 2026</span>
-          <span class="k">Calibrated NISAR products began flowing. The re-validation gate is now reachable.</span>
+          <span class="v">46 tests</span>
+          <span class="k">The codebase passes its full automated test suite, including the synthetic end-to-end gate.</span>
         </div>
         <div class="status">
           <span class="v">12 days</span>
@@ -343,13 +461,53 @@
           <span class="k">Stackable series over the Amazon benchmark area at last probe. The archive is still filling.</span>
         </div>
       </div>
+
+      <div class="progress-wrap reveal" aria-label="Project progress: foundation, synthetic benchmark, real data plumbing, forest benchmark, and partner pilot">
+        <div class="progress-line" aria-hidden="true"><span></span></div>
+        <div class="stages">
+          <div class="stage done"><b>✓</b><span>Foundation built</span></div>
+          <div class="stage done"><b>✓</b><span>Toy benchmark passes</span></div>
+          <div class="stage done"><b>✓</b><span>Real-data plumbing</span></div>
+          <div class="stage now"><b>4</b><span>Forest benchmark next</span></div>
+          <div class="stage"><b>5</b><span>Partner field loop</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="signal-lab">
+    <div class="shell">
+      <div class="head">
+        <span class="mono">02 / Signal lab</span>
+        <h2>One change matters. One should disappear.</h2>
+      </div>
+      <div class="lab reveal">
+        <div class="lab-display">
+          <canvas id="lab-canvas" aria-label="Interactive simulated radar coherence comparison"></canvas>
+          <div class="lab-overlay">
+            <span class="lab-chip" id="lab-date">PASS 01 / 12</span>
+            <span class="lab-chip">SIMULATED</span>
+          </div>
+        </div>
+        <div class="lab-copy">
+          <span class="mono">Try the detector logic</span>
+          <h3 id="lab-title">Stable forest baseline</h3>
+          <p id="lab-text">Coherence varies naturally from pass to pass. The baseline learns that ordinary texture before treating any drop as a candidate.</p>
+          <div class="mode-switch" aria-label="Choose a simulated radar scene">
+            <button type="button" data-mode="baseline" aria-pressed="true">Baseline</button>
+            <button type="button" data-mode="rain" aria-pressed="false">Rain</button>
+            <button type="button" data-mode="trail" aria-pressed="false">Trail</button>
+          </div>
+          <p class="mono" id="lab-verdict">Verdict · no alert</p>
+        </div>
+      </div>
     </div>
   </section>
 
   <section id="criteria">
     <div class="shell">
       <div class="head">
-        <span class="mono">Kill criteria</span>
+        <span class="mono">03 / Kill criteria</span>
         <h2>The conditions under which this project declares itself dead</h2>
       </div>
 
@@ -409,17 +567,17 @@
   <section id="built">
     <div class="shell">
       <div class="head">
-        <span class="mono">What exists</span>
-        <h2>The pipeline is built and measured. The science is not in.</h2>
+        <span class="mono">04 / What exists</span>
+        <h2>The experiment is executable. The evidence is not in.</h2>
       </div>
 
       <div class="cards">
         <article class="card">
           <span class="tag">Ingest</span>
-          <h3>Resumable, idempotent granule retrieval</h3>
+          <h3>Real NISAR discovery and extraction</h3>
           <p>
-            Retry with backoff, HTTP range resume, length and checksum verification, and a state
-            store so a killed build restarts where it stopped instead of trusting a truncated file.
+            Discover GUNW pairs by calibration tier, download a local cached granule, locate its
+            coherence layer, and preserve track, frame, time, and projection metadata.
           </p>
         </article>
         <article class="card">
@@ -431,19 +589,19 @@
           </p>
         </article>
         <article class="card">
-          <span class="tag">Memory</span>
-          <h3>Bounded by budget, not by area</h3>
+          <span class="tag">Context</span>
+          <h3>Known confounders enter explicitly</h3>
           <p>
-            A year of 20&nbsp;m coherence over one frame is about 19&nbsp;GB. The baseline runs in
-            spatial tiles, and tiled results are asserted bit-identical to untiled ones.
+            Forest cover constrains the search area. Terrain can be masked. ERA5 rain and wind can
+            be joined to each pass so natural decorrelation is visible rather than hand-waved.
           </p>
         </article>
         <article class="card">
-          <span class="tag">Capacity</span>
-          <h3>Compute is not the constraint</h3>
+          <span class="tag">Ground truth</span>
+          <h3>The schema is ready; the real labels are not</h3>
           <p>
-            A 12-day cycle for a 100&nbsp;km area costs about 38 seconds per frame group &mdash;
-            two hundredths of one percent of the window. Data movement is the real cost.
+            Versioned event collections exist for Pará, eastern woodland, and mining. They are
+            intentionally empty until externally documented events are transcribed and reviewed.
           </p>
         </article>
         <article class="card">
@@ -469,7 +627,7 @@
   <section id="run">
     <div class="shell">
       <div class="head">
-        <span class="mono">Run it</span>
+        <span class="mono">05 / Reproduce it</span>
         <h2>Everything reproduces from one command</h2>
       </div>
 
@@ -483,9 +641,6 @@
         </div>
 <pre><span class="c"># synthetic end-to-end, no credentials needed</span>
 make toy-bench
-
-<span class="c"># capacity: a cycle's work arriving as a burst</span>
-make load-test
 
 <span class="c"># against the real archive (needs NASA Earthdata credentials)</span>
 uv run python scripts/probe_archive.py benchmarks/amazon-para/aoi.yaml</pre>
@@ -502,7 +657,7 @@ uv run python scripts/probe_archive.py benchmarks/amazon-para/aoi.yaml</pre>
   <section id="scope">
     <div class="shell">
       <div class="head">
-        <span class="mono">Scope</span>
+        <span class="mono">06 / Boundaries</span>
         <h2>Civilian, terrain not people, conservative by default</h2>
       </div>
       <div class="prose">
@@ -527,7 +682,7 @@ uv run python scripts/probe_archive.py benchmarks/amazon-para/aoi.yaml</pre>
     <div class="foot-links">
       <a href="https://github.com/VaishGajaraj/Understory-AI">Repository</a>
       <a href="https://github.com/VaishGajaraj/Understory-AI/blob/main/docs/METHODOLOGY.md">Methodology</a>
-      <a href="https://github.com/VaishGajaraj/Understory-AI/blob/main/docs/PERFORMANCE.md">Capacity</a>
+      <a href="https://github.com/VaishGajaraj/Understory-AI/blob/main/docs/ROADMAP.md">Roadmap</a>
       <a href="https://github.com/VaishGajaraj/Understory-AI/blob/main/docs/GOVERNANCE.md">Governance</a>
       <a href="https://github.com/VaishGajaraj/Understory-AI/blob/main/CONTRIBUTING.md">Contributing</a>
     </div>
@@ -540,6 +695,102 @@ uv run python scripts/probe_archive.py benchmarks/amazon-para/aoi.yaml</pre>
 </footer>
 
 <script>
+(function () {
+  var canvas = document.getElementById('lab-canvas');
+  if (!canvas) return;
+  var ctx = canvas.getContext('2d');
+  var title = document.getElementById('lab-title');
+  var text = document.getElementById('lab-text');
+  var verdict = document.getElementById('lab-verdict');
+  var date = document.getElementById('lab-date');
+  var buttons = document.querySelectorAll('[data-mode]');
+  var mode = 'baseline';
+
+  var copy = {
+    baseline: {
+      title: 'Stable forest baseline',
+      text: 'Coherence varies naturally from pass to pass. The baseline learns that ordinary texture before treating any drop as a candidate.',
+      verdict: 'Verdict · no alert', pass: 'PASS 01 / 12'
+    },
+    rain: {
+      title: 'A transient rain signal',
+      text: 'Weather can produce a dramatic one-pass drop. Because it recovers on the next pass, the persistence filter rejects it as noise.',
+      verdict: 'Verdict · rejected as transient', pass: 'PASS 04 / 12'
+    },
+    trail: {
+      title: 'A persistent ground change',
+      text: 'A narrow coherence loss appears in the same place across multiple passes. Persistence and geometry turn it into a candidate trail.',
+      verdict: 'Verdict · candidate alert', pass: 'PASS 08 / 12'
+    }
+  };
+
+  function hash(x, y, seed) {
+    var n = Math.sin(x * 12.9898 + y * 78.233 + seed * 31.71) * 43758.5453;
+    return n - Math.floor(n);
+  }
+
+  function draw() {
+    var ratio = Math.min(window.devicePixelRatio || 1, 2);
+    var w = Math.max(1, canvas.clientWidth), h = Math.max(1, canvas.clientHeight);
+    if (canvas.width !== Math.round(w * ratio) || canvas.height !== Math.round(h * ratio)) {
+      canvas.width = Math.round(w * ratio); canvas.height = Math.round(h * ratio);
+    }
+    var cols = 72, rows = 52;
+    var cw = canvas.width / cols, ch = canvas.height / rows;
+    for (var y = 0; y < rows; y++) {
+      for (var x = 0; x < cols; x++) {
+        var value = 0.45 + hash(x, y, 2) * 0.28;
+        var anomaly = false;
+        if (mode === 'rain') {
+          var dx = x - 33, dy = y - 30;
+          if (dx * dx + dy * dy < 105) { value *= 0.35; anomaly = true; }
+        }
+        if (mode === 'trail') {
+          var dist = Math.abs((y - 39) + 0.43 * (x - 12));
+          if (x > 8 && x < 68 && dist < 1.5) { value = 0.09; anomaly = true; }
+        }
+        var r = 8 + value * 72, g = 15 + value * 155, b = 12 + value * 93;
+        if (anomaly && mode === 'trail') { r = 222; g = 151; b = 55; }
+        ctx.fillStyle = 'rgb(' + r + ',' + g + ',' + b + ')';
+        ctx.fillRect(x * cw, y * ch, Math.ceil(cw), Math.ceil(ch));
+      }
+    }
+    if (mode === 'rain') {
+      ctx.strokeStyle = '#8fa396'; ctx.lineWidth = 2 * ratio; ctx.setLineDash([4 * ratio, 4 * ratio]);
+      ctx.beginPath(); ctx.ellipse(canvas.width * 0.46, canvas.height * 0.58, canvas.width * 0.16, canvas.height * 0.2, 0, 0, Math.PI * 2); ctx.stroke();
+    }
+    ctx.setLineDash([]);
+  }
+
+  buttons.forEach(function (button) {
+    button.addEventListener('click', function () {
+      mode = button.getAttribute('data-mode');
+      buttons.forEach(function (item) { item.setAttribute('aria-pressed', item === button ? 'true' : 'false'); });
+      title.textContent = copy[mode].title;
+      text.textContent = copy[mode].text;
+      verdict.textContent = copy[mode].verdict;
+      date.textContent = copy[mode].pass;
+      draw();
+    });
+  });
+  window.addEventListener('resize', draw);
+  draw();
+})();
+
+(function () {
+  var items = document.querySelectorAll('.reveal');
+  if (!('IntersectionObserver' in window)) {
+    items.forEach(function (item) { item.classList.add('visible'); });
+    return;
+  }
+  var observer = new IntersectionObserver(function (entries) {
+    entries.forEach(function (entry) {
+      if (entry.isIntersecting) { entry.target.classList.add('visible'); observer.unobserve(entry.target); }
+    });
+  }, { threshold: 0.14 });
+  items.forEach(function (item) { observer.observe(item); });
+})();
+
 (function () {
   var canvas = document.getElementById('field');
   var label = document.getElementById('pass-label');
