@@ -15,7 +15,8 @@ The included workflow publishes this static site from `main` with no build step.
 3. Under **Build and deployment**, choose **GitHub Actions** as the source.
 4. Push to `main`, or run **Deploy to GitHub Pages** from the Actions tab.
 
-The page will be available at `https://vaishgajaraj.github.io/understory-site/`.
+The primary page is published from the `UnderstoryAI/understoryai.github.io`
+repository at `https://understoryai.github.io/`.
 
 If the repository needs to remain private, Cloudflare Pages or Vercel can host the
 same `index.html` on their free tiers.
