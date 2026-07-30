@@ -334,6 +334,28 @@
   }
   .card { transition: transform 0.2s ease, border-color 0.2s ease; }
   .card:hover { transform: translateY(-3px); border-color: #6fc48d45; }
+
+  .path-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; counter-reset: path; }
+  .path-step {
+    counter-increment: path; position: relative; min-height: 15rem; padding: 1.35rem;
+    border: 1px solid var(--line); border-radius: 12px; background: linear-gradient(150deg, var(--panel), #09100b);
+    display: flex; flex-direction: column; gap: 0.75rem;
+  }
+  .path-step::before {
+    content: "0" counter(path); font: 0.72rem var(--mono); color: var(--signal);
+    letter-spacing: 0.08em;
+  }
+  .path-step h3 { font-size: var(--s1); line-height: 1.25; }
+  .path-step p { color: var(--dim); font-size: var(--s-1); }
+  .path-step .state { margin-top: auto; padding-top: 1rem; font: 0.68rem var(--mono); letter-spacing: 0.07em; text-transform: uppercase; color: var(--alert); }
+  .path-step:first-child .state { color: var(--signal); }
+  .join {
+    margin-top: 1rem; padding: clamp(1.4rem, 4vw, 2.2rem); border: 1px solid #6fc48d38; border-radius: 14px;
+    background: radial-gradient(circle at 90% 20%, #57b87b18, transparent 42%), var(--panel);
+    display: flex; align-items: center; justify-content: space-between; gap: 2rem;
+  }
+  .join p { color: var(--ink-2); margin-top: 0.4rem; }
+  @media (max-width: 48rem) { .path-grid { grid-template-columns: 1fr; } .path-step { min-height: 0; } .join { align-items: flex-start; flex-direction: column; } }
   .card p { font-size: var(--s-1); color: var(--ink-2); line-height: 1.55; max-width: none; }
   .card .tag { font-family: var(--mono); font-size: 0.68rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--faint); }
 
@@ -624,10 +646,43 @@
     </div>
   </section>
 
+  <section id="path" class="section-signal">
+    <div class="shell">
+      <div class="head">
+        <span class="mono">05 / The path to evidence</span>
+        <h2>Three gates stand between working code and a defensible result</h2>
+      </div>
+      <div class="path-grid reveal">
+        <article class="path-step">
+          <h3>Build a real time series</h3>
+          <p>Re-probe the newly available PROVISIONAL archive and assemble at least six consecutive 12-day coherence pairs over a covered forest frame.</p>
+          <span class="state">Archive now available · probe due</span>
+        </article>
+        <article class="path-step">
+          <h3>Transcribe external truth</h3>
+          <p>Convert independently documented Imazon, IBAMA, and controlled-disturbance events into the reviewed, versioned label schema.</p>
+          <span class="state">Real collections currently empty</span>
+        </article>
+        <article class="path-step">
+          <h3>Publish the verdict</h3>
+          <p>Run the frozen detector, generate its report, compare against the pre-registered kill criteria, and release the result—even if it fails.</p>
+          <span class="state">Blocked by gates 01 and 02</span>
+        </article>
+      </div>
+      <div class="join reveal">
+        <div>
+          <h3>Have documented forest events or a field program?</h3>
+          <p>The highest-value contribution is trustworthy ground truth or a small partner watch area—not another model.</p>
+        </div>
+        <a class="btn primary" href="https://github.com/VaishGajaraj/Understory-AI/issues">Start a public issue ↗</a>
+      </div>
+    </div>
+  </section>
+
   <section id="run">
     <div class="shell">
       <div class="head">
-        <span class="mono">05 / Reproduce it</span>
+        <span class="mono">06 / Reproduce it</span>
         <h2>Everything reproduces from one command</h2>
       </div>
 
@@ -657,7 +712,7 @@ uv run python scripts/probe_archive.py benchmarks/amazon-para/aoi.yaml</pre>
   <section id="scope">
     <div class="shell">
       <div class="head">
-        <span class="mono">06 / Boundaries</span>
+        <span class="mono">07 / Boundaries</span>
         <h2>Civilian, terrain not people, conservative by default</h2>
       </div>
       <div class="prose">
