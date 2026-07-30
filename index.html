@@ -399,6 +399,7 @@
       <div class="nav-links">
         <a href="#question">The question</a>
         <a href="#signal-lab">Signal lab</a>
+        <a href="nisar-opportunities.html">Opportunities</a>
         <a href="technical-decisions.html">Decisions</a>
         <a class="nav-github" href="https://github.com/VaishGajaraj/Understory-AI">GitHub ↗</a>
       </div>
@@ -472,7 +473,7 @@
           <span class="k">The benchmark has not run on real forest data yet. Nothing here claims it works.</span>
         </div>
         <div class="status">
-          <span class="v">50 tests</span>
+          <span class="v">58 tests</span>
           <span class="k">The codebase passes its full automated test suite, including the synthetic end-to-end gate.</span>
         </div>
         <div class="status">
@@ -480,8 +481,8 @@
           <span class="k">Repeat cycle &mdash; a hard floor on how fast any alert can possibly arrive.</span>
         </div>
         <div class="status">
-          <span class="v">0 pairs</span>
-          <span class="k">Stackable series over the Amazon benchmark area at last probe. The archive is still filling.</span>
+          <span class="v">1 pair</span>
+          <span class="k">Longest usable series in one Pará frame at last probe. The archive is still filling.</span>
         </div>
       </div>
 
@@ -699,7 +700,8 @@
 make toy-bench
 
 <span class="c"># against the real archive (needs NASA Earthdata credentials)</span>
-uv run python scripts/probe_archive.py benchmarks/amazon-para/aoi.yaml</pre>
+uv run understory inventory benchmarks/amazon-para/aoi.yaml \
+  --tier provisional</pre>
         <div class="prose">
           <p>
             Every benchmark run also writes a QGIS-loadable alerts layer next to its report &mdash;
@@ -710,10 +712,48 @@ uv run python scripts/probe_archive.py benchmarks/amazon-para/aoi.yaml</pre>
     </div>
   </section>
 
+  <section id="opportunities">
+    <div class="shell">
+      <div class="head">
+        <span class="mono">07 / Beyond one experiment</span>
+        <h2>The reusable product is bigger than one detector</h2>
+      </div>
+      <div class="cards">
+        <article class="card">
+          <span class="tag">Same operating layer</span>
+          <h3>Floods, crops, and biomass</h3>
+          <p>
+            GCOV backscatter can support inundation, agricultural seasonality, ecosystem disturbance,
+            and biomass research—but each needs its own labels, model, and uncertainty.
+          </p>
+        </article>
+        <article class="card">
+          <span class="tag">Separate science</span>
+          <h3>Moving ground and moving ice</h3>
+          <p>
+            GUNW phase and GOFF offsets open paths to subsidence, landslides, earthquakes, glaciers,
+            and sea ice. They can reuse provenance and delivery, not the forest detector.
+          </p>
+        </article>
+        <article class="card">
+          <span class="tag">Production discipline</span>
+          <h3>Share infrastructure, isolate claims</h3>
+          <p>
+            One command surface and one evidence contract underneath; a distinct benchmark and release
+            gate for every physical signal and decision consequence.
+          </p>
+        </article>
+      </div>
+      <div class="cta-row" style="margin-top:1.4rem">
+        <a class="btn primary" href="nisar-opportunities.html">Explore the NISAR opportunity map →</a>
+      </div>
+    </div>
+  </section>
+
   <section id="scope">
     <div class="shell">
       <div class="head">
-        <span class="mono">07 / Boundaries</span>
+        <span class="mono">08 / Boundaries</span>
         <h2>Civilian, terrain not people, conservative by default</h2>
       </div>
       <div class="prose">
@@ -740,6 +780,7 @@ uv run python scripts/probe_archive.py benchmarks/amazon-para/aoi.yaml</pre>
       <a href="https://github.com/VaishGajaraj/Understory-AI/blob/main/docs/METHODOLOGY.md">Methodology</a>
       <a href="https://github.com/VaishGajaraj/Understory-AI/blob/main/docs/ROADMAP.md">Roadmap</a>
       <a href="technical-decisions.html">Technical decisions</a>
+      <a href="nisar-opportunities.html">NISAR opportunities</a>
       <a href="https://github.com/VaishGajaraj/Understory-AI/blob/main/docs/GOVERNANCE.md">Governance</a>
       <a href="https://github.com/VaishGajaraj/Understory-AI/blob/main/CONTRIBUTING.md">Contributing</a>
     </div>
